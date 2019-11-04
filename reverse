@@ -1,0 +1,13 @@
+int reverse(int x){
+    int max = 0x7FFFFFFF, min = 0x80000000;
+    long res = 0;
+    for(;x;res = res*10+x%10,x/=10);
+    
+    if (res>max||res<min)
+    {
+        return 0;
+    }
+    else{
+        return res;
+    }
+}
