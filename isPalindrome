@@ -1,0 +1,28 @@
+bool isPalindrome(int x){ 
+    int *p[31] = {0};
+    int valid_bit;
+    if(x<0)
+        return false;
+    else{ 
+        for(int i = 0; i < 31; i++)
+        {
+            p[i] = x%10;
+            x/=10;
+            if(!x){
+                valid_bit = i;
+                break;
+            }
+        }
+    }
+    
+    for(int j = 0; j <= valid_bit/2; j++){
+        if(p[j] == p[valid_bit-j]){
+            continue;
+        }
+        else{
+            return false;
+        }
+    }
+    return true;
+        
+}
