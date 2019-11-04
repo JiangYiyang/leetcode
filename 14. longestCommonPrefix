@@ -1,0 +1,23 @@
+char * longestCommonPrefix(char ** strs, int strsSize){
+    if(strsSize==0){
+        return "";
+    }
+    else if(strsSize==1){
+        return strs[0];
+    }
+    
+    int end = 1;
+    for(int i = 0;end;i++){ //字符串列数
+
+        for(int j = 1; j < strsSize; j++){ //字符串Num
+           if(strs[0][i]!=strs[j][i]||strs[j][i]=='\0'){
+               end = 0;
+               strs[0][i] = '\0';
+               return strs[0];
+               break;
+           }
+        }
+        
+    }
+    return strs[0];
+}
