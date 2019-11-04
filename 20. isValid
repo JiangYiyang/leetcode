@@ -1,0 +1,63 @@
+#define det_len 10000
+#define True 1
+#define False 0
+bool isValid(char * s){
+    unsigned int s_len = strlen(s);
+    printf("s_len = %d\n",s_len);
+    int p[det_len] = {0};
+    int i = 0;
+    int j = 0;
+    while(i<s_len){
+
+        switch ( s[i] ) {
+            case '(':
+                p[j] = 0;
+                j++;
+                break;
+            case '[':
+                p[j] = 1;
+                j++;
+                break;
+            case '{':
+                p[j] = 2;
+                j++;
+                break;
+            case ')':
+                if(j==0){ return False;}
+                if(p[j-1] == 0){
+                    j--;
+                }
+                else{
+                    return False;
+                }
+                break;
+            case ']':
+                if(j==0){ return False;}
+                if(p[j-1] == 1){
+                    j--;
+                }
+                else{
+                    return False;
+                }
+                break;
+            case '}':
+                if(j==0){ return False;}
+                if(p[j-1] == 2){
+                    j--;
+                }
+                else{
+                    return False;
+                }
+                break;
+            default:
+                putchar('\a');
+        }
+        i++;
+        printf("i = %d, j = %d, p = %d%d%d%d\n",i,j,p[0],p[1],p[2],p[3]);
+    }
+
+    if(j==0){
+        return True;
+    }
+return 0;
+}
