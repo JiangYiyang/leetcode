@@ -1,0 +1,23 @@
+bool isValidSudoku(char** board, int boardSize, int* boardColSize){
+    int row[9]={0},col[9]={0},sqr[3][3]={0};
+    int val;
+    for(int i = 0; i < boardSize;i++){
+        for(int j = 0; j < boardSize;j++){
+            if(board[i][j]!='.'){
+                if(board[i][j]<'1'||board[i][j]>'9'){
+                return false;
+                }
+                val = 1<<(board[i][j] - '0');
+                printf("val = %d\n",val);
+                if(val&row[i]||val&col[j]||val&sqr[i/3][j/3]){
+                    return false;
+                }
+                row[i]|=val;
+                col[j]|=val;
+                sqr[i/3][j/3]|=val;
+                printf("row = %d, col = %d, sqr = %d\n",row,col,sqr);
+            }
+        }
+    }
+    return true;
+}
