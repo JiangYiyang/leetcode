@@ -1,3 +1,9 @@
+//边界注意点： 
+//1. row, res的范围总是不够大，最后调为10000和1000才够。
+//2. 输入存在rowNum=1和字符串为空或1个的，都需要注意会不会导致比如T=0，等Index小于0和除数<1的情况~
+//leetcode 执行结果：通过显示
+//执行用时 :8 ms,在所有 c 提交中击败了84.75%的用户
+//内存消耗 :7.7 MB,在所有 c 提交中击败了88.46%的用户
 #include<math.h>
 #include<string.h>
 char * convert(char * s, int numRows){
