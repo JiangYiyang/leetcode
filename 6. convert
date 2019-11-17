@@ -18,19 +18,20 @@ char * convert(char * s, int numRows){
     // char *res = (char *)malloc(len_s*sizeof(char));
     char *p;
     char res[10000];
-    p = &res;
+    p = &res;//这里注意函数是返回指针，所以先申请数组，把指针指向数组即可，最后用'/0'收尾
     int row[1000];
     int row_sum[1000];
     int lineNum;
+    
     // 周期由numRows决定
     int T = numRows*2-2;
     // 周期数
     int T_num = len_s/T;
     // 周期冗余,
     int s_redu = len_s%T;
+    
     // 把整的先算上
     for(int i = 0;i<numRows;i++){
-        
         if(i%T == 0 || i%T == numRows-1){
             row[i]=T_num;
         }
@@ -38,37 +39,31 @@ char * convert(char * s, int numRows){
             row[i]=T_num*2;
         }
     }
-    //  for(int i = 0;i<numRows;i++){
-        // printf("%d\n",row[i]);
-    // }    
+    
     // 算冗余的
     for(int j = s_redu-1;j>=0;j--){
          lineNum = numRows-abs(j+1-numRows)-1;
          row[lineNum]++;
     }
-    //  for(int i = 0;i<numRows;i++){
-    //     printf("%d\n",row[i]);
-    // }    
+    
     //row算出各行各有多少个元素，之后往res里面填就可以
     //row_sum为前几行元素个数总和
     row_sum[0]=0;
     row_sum[1]=row[0];
     for(int i = 1;i<numRows;i++){
         row_sum[i+1]=row[i] +row_sum[i];
-        
     }    
+    
     int row_num[1000] = {0};
     for(int i = 0;i<len_s;i++){
         // 根据s中的序号来判断第几行，然后放到res的(lineNum行前面元素和)+(row_num[lineNum])的位置上
         lineNum = numRows-abs(i%T+1-numRows)-1;
         // printf("%d,%d\n",row_sum[lineNum],row_num[lineNum]);
         res[row_sum[lineNum]+row_num[lineNum]] = s[i];
-        
-        
         row_num[lineNum]++;
         // printf("%d\n",i);
     }
+    
     res[len_s] = '\0';
-     
     return p;
 }
