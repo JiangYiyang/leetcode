@@ -1,0 +1,61 @@
+#include <string.h>
+char * longestPalindrome(char * s){
+    int j;
+    int len_s = strlen(s);
+    int len_max=0;
+    int i_fin = 0;
+    int j_fin = 0;
+    // printf("%d",len_s);
+    for(int i = 0;i<len_s-len_max/2;i++){
+        // 奇数回文
+        for(int j = 0;i-j>=0;j++){
+                if(s[i-j]!=s[i+j]){
+                    if(2*j-1>len_max){
+                        len_max = 2*j-1;
+                        i_fin   = i;
+                        j_fin   = j-1;
+                    }
+                    // printf("奇数break\n");
+                    break;
+                }else{
+                    if(2*j+1>len_max){
+                        len_max = 2*j+1;
+                        i_fin   = i;
+                        j_fin   = j;
+                    } 
+                }
+        //  printf("i=%d,j=%d,s[i-j]=%d,s[i+j]=%d\n",i,j,s[i-j],s[i+j]);
+        
+        }
+       
+        
+        // 偶数回文
+        for(int j = 0;i-j>=0;j++){
+        //  printf("i=%d,j=%d,s[i-j]=%d,s[i+j+1]=%d\n",i,j,s[i-j],s[i+1+j]);
+                if(s[i-j]!=s[i+1+j]){
+                    if(2*j>len_max){
+                        len_max = 2*j;
+                        i_fin   = i;
+                        j_fin   = j-1;
+                    }
+                    // printf("i=%d,j=%d,len_max=%d\n",i_fin,j_fin,len_max);
+                    // printf("偶数break\n");
+                    break;
+                }
+                else{
+                    if(2*j+2>len_max){
+                        len_max = 2*j+2;
+                        i_fin   = i;
+                        j_fin   = j;
+                    } 
+                }
+        }
+    }
+    // printf("i=%d,j=%d,len_max=%d\n",i_fin,j_fin,len_max);
+    
+    int maxIndex = i_fin-j_fin;
+    char *retStr = malloc(len_max + 1);
+    memset(retStr, '\0', len_max + 1);
+    strncpy(retStr, s + maxIndex, len_max);
+    return retStr;
+}
