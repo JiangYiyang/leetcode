@@ -1,0 +1,93 @@
+//执行用时 :4 ms, 在所有 c 提交中击败了83.28%的用户
+//内存消耗 :7 MB, 在所有 c 提交中击败了67.64%的用户
+#include<math.h>
+int myAtoi(char * str){
+    char len_str = strlen(str);
+    int num[1000]={0};
+    long res;
+    // '0'48 '9'57 '+'43 '-'45
+    // 标记是否已经进入数字检索状态，遇到符号或者数字置1
+    int num_flag = 0;
+    int symbol   = 0;
+    int j        = 0;
+    // 将str中符号与数字提取到num中
+    for(int i = 0; i < len_str; i++){
+        // 1. 如果是空格而且还没进入数字检测，跳过
+        if(str[i] == 32 && (num_flag == 0)){
+            continue;
+        }
+        // 2. 没有进入数字检测进程时，如果检测到符号，则continue，记录符号。如果检测到数字，则进入检测
+        if((num_flag == 0) && ((str[i] >= 48 && str[i] <= 57) || str[i] == 43 || str[i] == 45)){
+            num_flag = 1;
+            if(str[i] == 45){
+                // 检测出来是负号
+                symbol = 1;
+                continue;
+            }
+            if(str[i] == 43){
+                continue;
+            }
+        } 
+
+        // 3. 无论是在数字检测还是不在，一旦遇到非空格，符号和数字的字符，跳出检测
+        if(str[i] != 32 && !((str[i] >= 48 && str[i] <= 57) || str[i] == 43 || str[i] == 45)){
+            // printf("character meet!\n");
+            break;
+        }
+
+        // 4. 如果进入数字检测进程，则之后遇到非数字也break，如果没有则记录，继续。功能上和3有一定重复。
+        if(num_flag == 1){
+            if(str[i] >= 48 && str[i] <= 57){
+                num[j] = str[i];
+                j++;
+            }
+            else{
+                break;
+            }
+        }
+    }
+    // printf("j=%d\n",j);
+    // for(int i = 0; i < 6; i++){
+    //     printf("%d\n",num[i]);
+    // }
+    // int i = j-1;
+    // 检测是否存在开头是0，去除无效的数字，记录有效数字起点
+    int valid_num = 0;
+    for(int i = 0; i < j; i++){
+        if(num[i]=='0'){
+            valid_num = i;
+            continue;
+        }
+        else{
+            valid_num = i;
+            break;
+        }
+    }
+    
+    // printf("valid_num=%d\n",valid_num);
+    // 将num中数字转化为具体数字，共有j+1位
+    if(j-valid_num>10){
+        if(symbol == 1){
+            res = -1*pow(2,31);
+        }
+        else{
+            res = pow(2,31)-1;
+        }
+        return res;
+    }
+    res = 0;
+    for(int i = valid_num; i < j; i++){
+        // printf("%d\n",num[j+1]);
+        res+=(num[i]-48)*pow(10,(j-i-1));
+    }
+    res = (-2*symbol+1)*res;
+
+    if(res<-1*pow(2,31)){
+        res = -1*pow(2,31);
+    }
+
+    if(res>pow(2,31)-1){
+            res = pow(2,31)-1;
+    }
+    return res;
+}
