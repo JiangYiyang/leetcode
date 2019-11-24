@@ -1,0 +1,23 @@
+// 执行用时 :16 ms, 在所有 c 提交中击败了96.28%的用户
+// 内存消耗 :7.8 MB, 在所有 c 提交中击败了75.93%的用户
+int maxArea(int* height, int heightSize){
+    int p_L = 0;
+    int p_R = heightSize - 1;
+    // printf("%d\n",p_R);
+    // printf("%d\n",p_L);
+    int Area = 0;
+    
+    while(p_L != p_R){
+        if(height[p_L] > height[p_R]){
+            // printf("%d,%d,%d,%d,%d\n",p_R,p_L,Area,height[p_L],height[p_R]);
+            Area = Area > (p_R - p_L) * height[p_R] ? Area : (p_R - p_L) * height[p_R];
+            p_R--;
+        }
+        else{
+            // printf("%d,%d,%d,%d,%d\n",p_R,p_L,Area,height[p_L],height[p_R]);
+            Area = Area > (p_R - p_L) * height[p_L] ? Area : (p_R - p_L) * height[p_L];
+            p_L++;
+        }
+    }
+    return Area;
+}
