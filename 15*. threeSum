@@ -1,0 +1,50 @@
+/**
+ * Return an array of arrays of size *returnSize.
+ * The sizes of the arrays are returned as *returnColumnSizes array.
+ * Note: Both returned array and *columnSizes array must be malloced, assume caller calls free().
+ */
+int cmpfunc (const void * a, const void * b)
+{
+   return ( *(int*)a - *(int*)b );
+}
+
+int** threeSum(int* nums, int numsSize, int* returnSize, int** returnColumnSizes){
+    qsort(nums,numsSize, sizeof(int), cmpfunc);
+    
+    // for(int i = 0; i < numsSize; i++){
+    //     printf("%d ",nums[i]); 
+    // }
+    
+    int left = 0;
+    int p    = 1;
+    int q    = numsSize - 1;
+    int tmp[3] = {0};
+    int **ret = (int **)malloc(sizeof(int *) * (numsSize + 1) * 6);
+    int sum = 0;
+    returnSize = 0;
+    while(nums[left] > 0 && left < numsSize - 2){
+        while(p < q-1){
+            sum = nums[left] + nums[p] + nums[q];
+            printf("%d %d %d %d\n",sum,nums[left],nums[p],nums[q]);
+            if(sum == 0){
+                ret[*returnSize][0] = nums[left];
+                ret[*returnSize][1] = nums[p];
+                ret[*returnSize][2] = nums[q];
+                (*returnSize)++;    
+            }
+            else if(sum < 0){
+                p++;
+            }
+            else if(sum > 0){
+                q--;
+            }
+            
+            // printf("%d %d %d \n",left,p,q);
+        }
+        left++;
+        p = left + 1;
+        q = numsSize - 1;
+    }
+    
+    return ret;
+}
