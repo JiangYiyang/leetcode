@@ -1,0 +1,10 @@
+/**
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+char ** letterCombinations(char * digits, int* returnSize){
+    int digits_num = strlen(digits);
+    int ret_size = pow(4,digits_num);
+    int **ret = (int **)malloc(sizeof(char *) * ret_size);
+    printf("digits_num = %d, pow(4,digits_num)=%d\n",digits_num,ret_size);
+    return ret;
+}
