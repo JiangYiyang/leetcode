@@ -1,0 +1,122 @@
+// 执行用时 :8 ms, 在所有 c 提交中击败了94.19%的用户
+// 内存消耗 :8.2 MB, 在所有 c 提交中击败了86.08%的用户
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     struct ListNode *next;
+ * };
+ */
+struct ListNode* reverseKGroup(struct ListNode* head, int k){
+    //边界，如果[]则返回0
+    if(head == NULL){
+        return 0;
+    }
+    //边界，如果1个也直接返回
+    if(head->next == NULL){
+        return head;
+    }
+    //边界，如果k=1个则直接返回
+    if(k == 1){
+        return head;
+    }
+    else if(k == 2){
+        // 用ini来代表链表头，一定是第二个链表
+        struct ListNode *ini = head->next;
+        struct ListNode *tmp, *tmp1;
+        tmp = head->next;
+        while(head->next != NULL && tmp->next != NULL && tmp->next->next != NULL){
+            tmp1 = tmp->next;
+            head->next = tmp->next->next;
+            tmp->next = head;
+            head = tmp1;
+            tmp = head->next;
+        }
+        if(tmp->next == NULL){
+            tmp->next = head;
+            head->next = NULL;
+        }
+        if(tmp->next->next == NULL){
+            head->next = tmp->next;
+            tmp->next = head;
+            head->next->next = NULL;
+        }
+        return ini;
+    }
+    // 因为重定向需要三个指针，所以区分开k>=3 和k=1,2的情况
+    else if(k>=3){
+        struct ListNode *scan = head;
+        //算下长度
+        int len = 0;
+        while(scan->next != NULL){
+            len++;
+            scan = scan->next;
+        }
+        // 边界，如果长度不超过k，则直接返回
+        if(len+1<k){
+            return head;
+        }
+        int multi_num = (len+1)/k;
+        // 设定初始指针
+        struct ListNode *ini = head;
+        for(int i = 0; i < k-1; i++){
+            ini = ini->next;
+        }
+        // 重新指向
+        struct ListNode *t1,*t2,*t3,*tmp;
+            t1 = head;
+        //multi_num * k组的循环
+        for(int i = 0; i < multi_num; i++){
+            t1 = head;
+            t2 = t1->next;
+            t3 = t2->next;
+            int j = 0;
+            //k个链表的重定向
+            while(j<k-3){
+                t2->next = t1;
+                t1 = t2;
+                t2 = t3;
+                t3 = t3->next;
+                j++;
+            } 
+            //对不同结尾情况，是否len是k的整数倍的判断
+            if((len+1)%k != 0){
+                if(i < multi_num -1){
+                    tmp = t3;
+                    for(int ii = 0; ii < k; ii++){
+                        tmp = tmp->next;
+                    }
+                    head->next = tmp;
+                    head = t3->next;
+                }
+                else{
+                    head->next = t3->next;
+                    head = head->next;
+                }
+            }
+            else {
+                if(i < multi_num -1){
+                    tmp = t3;
+                    for(int ii = 0; ii < k; ii++){
+                        tmp = tmp->next;
+                    }
+                    head->next = tmp;
+                    head = t3->next;
+                }
+                else{
+                    head->next = NULL;
+                }
+            }
+            t2->next = t1;
+            t3->next = t2;
+        }
+        // 打印链表模板
+        // struct ListNode *prt = ini;
+        // while(prt->next != NULL){
+        //     printf("%d->",prt->val);
+        //     prt = prt->next;
+        // }
+        return ini;
+    }
+    return head;
+}
