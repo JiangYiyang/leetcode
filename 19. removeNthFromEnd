@@ -1,0 +1,32 @@
+//执行用时 :0 ms, 在所有 c 提交中击败了100.00%的用户
+//内存消耗 :7.2 MB, 在所有 c 提交中击败了75.42%的用户
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     struct ListNode *next;
+ * };
+ */
+
+
+struct ListNode* removeNthFromEnd(struct ListNode* head, int n){
+    struct ListNode *tmp,*p,*ini;
+    tmp= head;
+    p= head;
+    int len = 0;
+    while(p->next != NULL){
+        p = p->next;
+        len++;
+        if(len>n){
+            tmp = tmp->next;
+        }
+    }
+    // printf("%d",len);
+    if(len+1 == n){
+        return head->next;
+    }
+    else{
+        tmp->next = tmp->next->next;
+    }
+    return head;
+}
