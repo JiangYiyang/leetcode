@@ -1,12 +1,19 @@
+//执行用时 :0 ms, 在所有 c 提交中击败了100.00%的用户
+//内存消耗 :7 MB, 在所有 c 提交中击败了56.25%的用户
 /**
  * Note: The returned array must be malloced, assume caller calls free().
  */
 
 char ** letterCombinations(char * digits, int* returnSize){
+    
     char *c[8] = {"abc","def","ghi","jkl","mno","pqrs","tuv","wxyz"};
     int len[8] = {3,3,3,3,3,4,3,4};
     int digits_num = strlen(digits);
-    printf("digits_num = %d\n",digits_num);
+    if(digits_num == 0){
+        *returnSize = 0;
+        return 0;
+    }
+    // printf("digits_num = %d\n",digits_num);
 
     // 这个是标记处理到digits的位置
     int dig_tmp = 0;
@@ -15,13 +22,15 @@ char ** letterCombinations(char * digits, int* returnSize){
     // 算有多少个组合
     for(int i = 0; i < digits_num; i++){
         total_num *= len[digits[i]-50];
-        printf("%d,%d",total_num,len[digits[i]-50]);
+        // printf("%d,%d",total_num,len[digits[i]-50]);
     }
-
+    *returnSize = total_num;
     // 开空间
     char **ret = (char **)malloc(sizeof(char *) * total_num);
     for(int j = 0; j<total_num;j++){
-        ret[j] = (char *)malloc(sizeof(char) * digits_num );
+        ret[j] = (char *)malloc(sizeof(char) * digits_num + 1 );
+        memset(ret[j],0,sizeof(char) * digits_num + 1);
+
     }
 
     int cur_level = total_num;
@@ -30,40 +39,42 @@ char ** letterCombinations(char * digits, int* returnSize){
     int i = 0;
     int j = -1;
     while(dig_tmp < digits_num){
-        while(i<cur_level){
-            if(digits[dig_tmp] == '7' || digits[dig_tmp] == '9'){
-                printf("level 4");
-                cur_level = cur_level / 4;
-                while(i < total_num){
-                    if(i % cur_level == 0){
-                        j++;
-                    }
-                    ret[i][dig_tmp] = c[digits[dig_tmp]-50][j%len[digits[dig_tmp]-50]];
-                    i++;
+        i = 0;
+        j = -1;
+        if(digits[dig_tmp] == '7' || digits[dig_tmp] == '9'){
+            // printf("level 4");
+            i = 0;
+            cur_level = cur_level / 4;
+            while(i < total_num){
+                if(i % cur_level == 0){
+                    j++;
                 }
+                ret[i][dig_tmp] = c[digits[dig_tmp]-50][j%len[digits[dig_tmp]-50]];
+                i++;
             }
-            else{
-                printf("level 3");
-                cur_level = cur_level / 3;
-                printf("i=%d\n ",i);
+        }
+        else{
+            printf("level 3");
+            i = 0;
+            cur_level = cur_level / 3;
+            while(i < total_num){
                 if(i % cur_level == 0){
                         j++;
                 }
 
-                printf("level 3 s1\n");
-                printf("i=%d\n ",i);
-                printf("j=%d\n",j);
-                printf("dig_tmp=%d\n",dig_tmp);
-                printf("digits[dig_tmp]-48=%d\n",digits[dig_tmp]-48);
-                printf("len[digits[dig_tmp]-48]=%d\n",len[digits[dig_tmp]-48]);
+                // printf("i=%d\n ",i);
+                // printf("j=%d\n",j);
+                // printf("dig_tmp=%d\n",dig_tmp);
+                // printf("digits[dig_tmp]-48=%d\n",digits[dig_tmp]-48);
+                // printf("len[digits[dig_tmp]-48]=%d\n",len[digits[dig_tmp]-48]);
 
                 ret[i][dig_tmp] = c[digits[dig_tmp]-50][j%len[digits[dig_tmp]-50]];
                 
-                printf("ret[i][dig_tmp]=%c\n",ret[i][dig_tmp]);
+                // printf("ret[i][dig_tmp]=%c\n",ret[i][dig_tmp]);
                 i++;
-                printf("level 3 s2");
             }
         }
+        
         dig_tmp++;
     }
     return ret;
