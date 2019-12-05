@@ -1,0 +1,39 @@
+//执行用时 :4 ms, 在所有 c 提交中击败了79.49%的用户
+//内存消耗 :6.8 MB, 在所有 c 提交中击败了74.65%的用户
+int divide(int dividend, int divisor){
+    int sig_end = dividend > 0;
+    int sig_sor = divisor  > 0;
+    if(dividend == -2147483648 && divisor == -1){
+        return 2147483647;
+    }
+    if(dividend == -2147483648 && divisor == 1){
+        return -2147483648;
+    }
+    // 变负，如果出现负数上限，变成正数会报错
+    divisor  = sig_sor ? 0 - divisor  : divisor ;
+    dividend = sig_end ? 0 - dividend : dividend;
+    
+    // 求商,单纯用减超时
+    // 思路：用位运算进行减法操作
+    int tmp_min = 0;
+    int tmp_ret = 0;
+    int ret = 0;
+    while(dividend <= divisor){
+        tmp_min = divisor;
+        tmp_ret = 1;
+        while(1){
+            // 这里注意，要注意双倍超过范围
+            if(tmp_min > -100000000 && (tmp_min + tmp_min) > dividend  ){
+                tmp_min += tmp_min;
+                tmp_ret += tmp_ret;
+            }
+            else{
+                dividend -= tmp_min;
+                ret += tmp_ret;
+                break;
+            }
+        }
+    }
+
+    return sig_end ^ sig_sor ? 0 - ret : ret;
+}
