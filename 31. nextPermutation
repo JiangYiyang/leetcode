@@ -1,3 +1,5 @@
+// 执行用时 :8 ms, 在所有 c 提交中击败了90.01%的用户
+// 内存消耗 :7.4 MB, 在所有 c 提交中击败了87.32%的用户
 // 升序排列
 int cmpfunc (const void * a, const void * b){
     return ( *(int*)a - *(int*)b );
