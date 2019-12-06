@@ -1,0 +1,59 @@
+// 升序排列
+int cmpfunc (const void * a, const void * b){
+    return ( *(int*)a - *(int*)b );
+}
+
+void nextPermutation(int* nums, int numsSize){
+    int tmp;
+    // printf("%d nums[0]=%d nums[1]=%d\n",numsSize,nums[0],nums[1]);
+    if(numsSize <= 1){
+        return nums;
+    }
+    if(numsSize == 2){
+        tmp = nums[0];
+        nums[0] = nums[1];
+        nums[1] = tmp;
+        // printf("tmp = %d nums[0]=%d nums[1]=%d",tmp,nums[0],nums[1]);
+        return nums;
+    }
+    int i = 0;
+    // 从右到左找下降，如果没找到，说明不存在更大排列，则升序排序
+    while(1){
+        // printf(" nums[numsSize-2-i]=%d nums[numsSize-1-i]=%d\n",nums[numsSize-2-i],nums[numsSize-1-i]);
+        if(nums[numsSize-2-i] >= nums[numsSize-1-i]){
+            if(numsSize-2-i == 0){
+                // 升序排列
+                qsort(nums,numsSize, sizeof(int), cmpfunc);
+                return nums;
+            }
+            i++;
+        }
+        else{
+            // printf("break i=%d\n",i);
+            break;
+        }
+    }
+    if(i == 0){
+        tmp = nums[numsSize-1];
+        nums[numsSize-1] = nums[numsSize-2];
+        nums[numsSize-2] = tmp;
+        // printf("tmp = %d nums[0]=%d nums[1]=%d",tmp,nums[0],nums[1]);
+        return nums;
+    }
+    int j = 1;
+    while(1){
+
+        if( -2-i+j < 0 && nums[numsSize-2-i] < nums[numsSize-2-i+j] ){
+            j++;
+        }
+        else
+        {
+            tmp = nums[numsSize-2-i];
+            nums[numsSize-2-i] = nums[numsSize-2-i+j-1];
+            nums[numsSize-2-i+j-1] = tmp;
+            qsort(nums+numsSize-2-i+1,2+i-1, sizeof(int), cmpfunc);
+            return nums;
+        }
+    }
+    return nums;
+}
