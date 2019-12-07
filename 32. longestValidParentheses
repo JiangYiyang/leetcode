@@ -1,0 +1,49 @@
+//执行用时 :4 ms, 在所有 c 提交中击败了89.32%的用户
+//内存消耗 :7.8 MB, 在所有 c 提交中击败了94.94%的用户
+int longestValidParentheses(char * s){
+    int len_s = strlen(s);
+    if(len_s <= 1){
+        return 0;
+    }
+    int *dp = (int *)malloc(sizeof(int) * len_s);
+    memset(dp,0,sizeof(int) * len_s);
+    // for(int i = 0; i<len_s;i++){
+    //     printf("%d ",dp[i]);
+    // }
+    int maxlen = 0;
+    for(int i = 1; i<len_s;i++){
+        if(s[i] == ')' && s[i-1] == '('){
+            if(i-2 < 0){
+                dp[i] = 2;
+            }
+            else{
+                dp[i] = 2 + dp[i-2];
+            }
+            if(dp[i] > maxlen){
+                maxlen = dp[i];
+            }
+        }
+        // 找之前的不能低于0
+        else if(s[i] == ')' && s[i-1] == ')' && i - dp[i-1] -1 >= 0){
+            // 这里双））,则如果i - dp[i-1] -1 < 0，则这个不行，直接是0
+            // 应先判断能不能合起来,如果能合起来则+2
+            // printf("s[i - dp[i-1] -1]=%c\n",s[i - dp[i-1] -1]);
+
+            if(s[i - dp[i-1] -1] == '('){
+                dp[i] = 2 + dp[i-1];
+                // 如果左边还有，那加上左边值(同时这个操作前提是s[i - dp[i-1] -1] == '(')
+                if(i - dp[i-1] -2 >= 0){
+                    dp[i] += dp[i - dp[i-1] -2];
+                }
+            }
+            if(dp[i] > maxlen){
+                maxlen = dp[i];
+            }
+        }
+    }
+        // printf("len_s=%d\n",len_s);
+        // for(int i = 0; i<len_s;i++){
+        //     printf("%d ",dp[i]);
+        // }
+    return maxlen;
+}
